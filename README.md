@@ -1,42 +1,56 @@
-# Robot Control System
+# Assignment 2 - RT1 ROS Nodes
 
 ## Overview
+This repository contains the solution for the second assignment of the RT1 course. The assignment involved the creation of ROS nodes in C++ to perform specific tasks related to robot navigation and information retrieval.
 
-This repository contains code for controlling a robot using ROS (Robot Operating System). The system includes an action client for reaching a goal, feedback handling, and odometry data processing.
 
-## Code Explanation
+### Node (Action Client) explanation
+- Allows a user to input a target position for a robot to navigate to.
+- Supports canceling the operation and reassigning a new target destination.
+- Implemented using an action client.
+- Publishes the robot's position and velocity as a custom message.
+- Utilizes values from the `/odom` topic.
 
-### Pseudocode
 
-```plaintext
-Initialize ROS node "aclient"
-Create an action client for the "reaching_goal" action server
-Wait for the action server to start
-Create subscribers for feedback ("sub_fb") and odometry ("sub_pos_vel")
-Create a publisher for a custom message ("pub_pos_vel")
-Define callback function CallBack1 to handle action feedback
-    Extract feedback information and display it
-Define callback function CallBack2 to handle odometry data
-    Extract information from the odometry message
-    Create a custom message and publish it
-Main Loop:
-    while ROS is running
-        Display menu options:
-            1. Set a new target
-            2. Cancel the operation
-            3. Get robot coordinates and state
-        Take user input for choice
-        If choice is 1:
-            Prompt user for target coordinates (x, y)
-            Create a goal message and send it to the action server
-        If choice is 2:
-            Display cancellation message
-            Cancel the current action goal
-            Exit the loop
-        If choice is 3:
-            Display current robot position (X, Y) and state
-        If choice is invalid, display an error message
-        Spin once to process callbacks and update ROS events
-    End Main Loop
-Shutdown the ROS node
+## Node PseudoCode
+
+
+```cpp
+Initialize ROS node
+Initialize action client for PlanningAction
+
+Define callback function for action feedback:
+  Extract and display feedback information
+
+Define callback function for /odom topic:
+  Extract information, create custom message, and publish it
+
+Main loop:
+  Wait for the action server to start
+
+  Set up subscribers and publisher
+
+  While ROS is ok:
+    Display user menu
+    Read user choice
+
+    If choice is 1:
+      Read target coordinates (x, y)
+      Send goal to action server
+
+    Else if choice is 2:
+      Display cancellation message
+      Cancel the current goal
+      Exit the loop
+
+    Else if choice is 3:
+      Display current robot position and state
+
+    Else:
+      Display an error message
+
+    Process callbacks
+
+Exit the program
+
 
